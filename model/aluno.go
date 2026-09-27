@@ -6,23 +6,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type Matriculas struct {
-
+type Matricula struct {
 	gorm.Model
-	Id int `gorm:"primaryKey" json:"id"`
-	CodigoMatricula string `gorm:"varchar(20);not null" json:"codigoMatricula"`
-	NomeCurso string `gorm:"varchar(20);not  null" json:"nomeCurso"`
-	DataInicio time.Time `gorm:"type:date;not null" json:"dataInicio"`
-	Aluno Aluno
+	CodigoMatricula string    `gorm:"type:varchar(20);not null" json:"codigoMatricula"`
+	NomeCurso       string    `gorm:"type:varchar(20);not  null" json:"nomeCurso"`
+	DataInicio      time.Time `gorm:"type:date;not null" json:"dataInicio"`
+	AlunoId         int       `gorm:"not null" json:"alunoId"`
+	Aluno           Aluno     `gorm:"foreignKey:AlunoId; constraint:OnDelete:CASCADE"`
 }
 
-
 type Aluno struct {
-	Id              int
-	Nome            string
-	Telefone        string
-	DataNascimento  time.Time
-	DataInclusao    time.Time
-	DataAtualizacao time.Time
-	Matriculas      []Matriculas
+	gorm.Model
+	Nome           string    `gorm:"type:varchar(30); not null" json:"nome"`
+	Telefone       string    `gorm:"type:varchar(15);not null" json:"telefone"`
+	DataNascimento time.Time `gorm:"type:date;not null" json:"dataNascimento"`
+	Matriculas     []Matricula
 }
